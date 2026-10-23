@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f5ff" />
+    <title>Student Task Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- Sidebar navigation and quick progress summary. -->
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#dashboard" aria-label="Studyflow home">
+          <span class="brand-mark" aria-hidden="true"
+            ><svg viewBox="0 0 24 24">
+              <path d="M5 7.5 12 4l7 3.5v9L12 20l-7-3.5v-9Z" />
+              <path d="m8.5 12 2.2 2.2 4.8-5" /></svg
+          ></span>
+          <span class="brand-name">studyflow<span>.</span></span>
+        </a>
+        <p class="nav-caption">WORKSPACE</p>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button
+            class="nav-link is-active"
+            data-view="dashboard"
+            type="button"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+              <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+              <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+              <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" /></svg
+            ><span>Dashboard</span>
+          </button>
+          <button class="nav-link" data-view="tasks" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 6h12M8 12h12M8 18h12" />
+              <path
+                d="m3.5 6 .8.8L6 5m-2.5 7 .8.8 1.7-1.8m-2.5 7 .8.8 1.7-1.8"
+              /></svg
+            ><span>My tasks</span
+            ><span class="nav-count" id="nav-task-count">0</span>
+          </button>
+          <button class="nav-link" data-view="calendar" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+              <path
+                d="M7.5 3.5v3M16.5 3.5v3M3.5 9h17M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01"
+              /></svg
+            ><span>Calendar</span>
+          </button>
+        </nav>
+        <div class="sidebar-note">
+          <div class="note-spark" aria-hidden="true">✳</div>
+          <p class="note-title">One step at a time.</p>
+          <p class="note-copy">Small progress adds up to big things.</p>
+          <div class="note-progress"><span id="sidebar-progress"></span></div>
+          <p class="note-foot">
+            <span id="sidebar-progress-label">0% complete</span><span>✦</span>
+          </p>
+        </div>
+        <div class="sidebar-bottom">
+          <span class="avatar" aria-hidden="true">S</span
+          ><span class="profile-copy"
+            ><strong>Student</strong><small>Keep it up!</small></span
+          ><span class="profile-spark" aria-hidden="true">✦</span>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button
+            class="icon-button menu-toggle"
+            id="menu-toggle"
+            type="button"
+            aria-label="Open navigation"
+            aria-expanded="false"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+          <div class="breadcrumb">
+            <span>Workspace</span><span class="crumb-slash">/</span
+            ><strong id="page-crumb">Dashboard</strong>
+          </div>
+          <div class="topbar-actions">
+            <div class="today-chip">
+              <span class="today-dot"></span><span id="today-label"></span>
+            </div>
+            <button
+              class="button button-primary top-add"
+              id="top-add-task"
+              type="button"
+            >
+              <span aria-hidden="true">+</span> New task
+            </button>
+          </div>
+        </header>
+
+        <div class="page-wrap">
+          <!-- JavaScript switches between these three main views. -->
+          <section
+            class="view-panel is-visible"
+            id="dashboard-view"
+            aria-labelledby="welcome-title"
+          >
+            <div class="welcome-row">
+              <div>
+                <p class="eyebrow">
+                  <span class="eyebrow-line"></span> YOUR STUDY SPACE
+                </p>
+                <h1 id="welcome-title">
+                  Good <span id="greeting-period">day</span>, student
+                  <span class="wave" aria-hidden="true">✦</span>
+                </h1>
+                <p class="welcome-copy">
+                  A little organization goes a long way. Here's your day at a
+                  glance.
+                </p>
+              </div>
+              <div class="week-stamp">
+                <span class="stamp-icon" aria-hidden="true">✳</span
+                ><span
+                  ><strong id="week-label">Your week</strong
+                  ><small>Make it a good one</small></span
+                >
+              </div>
+            </div>
+            <div class="stats-grid" aria-label="Task summary">
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span>Total tasks</span
+                  ><span class="stat-icon icon-lilac" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path
+                        d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"
+                      /></svg
+                  ></span>
+                </div>
+                <div class="stat-value" id="total-count">0</div>
+                <p class="stat-foot">
+                  <span class="foot-spark">✦</span> In your study plan
+                </p>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span>In progress</span
+                  ><span class="stat-icon icon-peach" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8.5" />
+                      <path d="M12 7v5l3 2" /></svg
+                  ></span>
+                </div>
+                <div class="stat-value" id="pending-count">0</div>
+                <p class="stat-foot">
+                  <span class="foot-orange">●</span> Ready when you are
+                </p>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span>Completed</span
+                  ><span class="stat-icon icon-mint" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="m5 12.5 4.2 4L19 7" /></svg
+                  ></span>
+                </div>
+                <div class="stat-value" id="completed-count">0</div>
+                <p class="stat-foot">
+                  <span class="foot-green">↗</span> Look at you go
+                </p>
+              </article>
+            </div>
+            <div class="dashboard-grid">
+              <section
+                class="content-panel task-panel"
+                aria-labelledby="tasks-heading"
+              >
+                <div class="panel-heading">
+                  <div>
+                    <p class="section-kicker">THE TO-DO LIST</p>
+                    <h2 id="tasks-heading">
+                      Your tasks
+                      <span class="heading-count" id="heading-task-count"
+                        >0</span
+                      >
+                    </h2>
+                  </div>
+                  <button
+                    class="text-button"
+                    data-open-view="tasks"
+                    type="button"
+                  >
+                    See all <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+                <div class="task-toolbar">
+                  <div
+                    class="filter-tabs"
+                    role="group"
+                    aria-label="Filter tasks"
+                  >
+                    <button
+                      class="filter-tab is-selected"
+                      data-filter="all"
+                      type="button"
+                      aria-pressed="true"
+                    >
+                      All</button
+                    ><button
+                      class="filter-tab"
+                      data-filter="pending"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      Pending</button
+                    ><button
+                      class="filter-tab"
+                      data-filter="completed"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      Done
+                    </button>
+                  </div>
+                  <label class="search-box"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="10.8" cy="10.8" r="6.3" />
+                      <path d="m15.5 15.5 4.2 4.2" /></svg
+                    ><span class="visually-hidden">Search tasks</span
+                    ><input
+                      id="task-search"
+                      type="search"
+                      placeholder="Search tasks"
+                      autocomplete="off"
+                  /></label>
+                </div>
+                <div class="task-list" id="dashboard-task-list"></div>
+              </section>
+              <aside
+                class="content-panel progress-panel"
+                aria-labelledby="progress-heading"
+              >
+                <div class="panel-heading">
+                  <div>
+                    <p class="section-kicker">STEADY WINS</p>
+                    <h2 id="progress-heading">Your progress</h2>
+                  </div>
+                  <span class="progress-star" aria-hidden="true">✳</span>
+                </div>
+                <div class="progress-ring-wrap">
+                  <div
+                    class="progress-ring"
+                    id="progress-ring"
+                    role="img"
+                    aria-label="0 percent of tasks completed"
+                  >
+                    <div class="ring-inner">
+                      <strong id="progress-percent">0<span>%</span></strong
+                      ><small>completed</small>
+                    </div>
+                  </div>
+                </div>
+                <p class="progress-message" id="progress-message">
+                  Every task you finish is a win.
+                </p>
+                <div class="progress-legend">
+                  <span><i class="legend-dot dot-done"></i>Completed</span
+                  ><strong id="progress-done-label">0 tasks</strong>
+                </div>
+                <div class="progress-legend">
+                  <span><i class="legend-dot dot-left"></i>Still to do</span
+                  ><strong id="progress-pending-label">0 tasks</strong>
+                </div>
+              </aside>
+            </div>
+            <section
+              class="content-panel deadline-panel"
+              aria-labelledby="deadline-heading"
+            >
+              <div class="panel-heading">
+                <div>
+                  <p class="section-kicker">DON'T MISS A THING</p>
+                  <h2 id="deadline-heading">
+                    Coming up
+                    <span class="heading-sun" aria-hidden="true">✦</span>
+                  </h2>
+                </div>
+                <button
+                  class="text-button"
+                  data-open-view="calendar"
+                  type="button"
+                >
+                  Open calendar <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <div class="deadline-list" id="deadline-list"></div>
+            </section>
+            <footer class="page-footer">
+              <span>Made for your next big thing.</span
+              ><span>Study a little. Achieve a lot. <b>✦</b></span>
+            </footer>
+          </section>
+
+          <!-- The full task list has its own search and filters. -->
+          <section
+            class="view-panel"
+            id="tasks-view"
+            aria-labelledby="all-tasks-heading"
+            hidden
+          >
+            <div class="subpage-heading">
+              <div>
+                <p class="eyebrow">
+                  <span class="eyebrow-line"></span> STAY ON TRACK
+                </p>
+                <h1 id="all-tasks-heading">
+                  My tasks <span class="wave" aria-hidden="true">✦</span>
+                </h1>
+                <p class="welcome-copy">
+                  Everything on your plate, all in one place.
+                </p>
+              </div>
+              <button
+                class="button button-primary"
+                id="tasks-add-task"
+                type="button"
+              >
+                <span aria-hidden="true">+</span> Add a task
+              </button>
+            </div>
+            <section
+              class="content-panel full-task-panel"
+              aria-label="All tasks"
+            >
+              <div class="task-toolbar full-toolbar">
+                <div class="filter-tabs" role="group" aria-label="Filter tasks">
+                  <button
+                    class="filter-tab is-selected"
+                    data-filter="all"
+                    type="button"
+                    aria-pressed="true"
+                  >
+                    All</button
+                  ><button
+                    class="filter-tab"
+                    data-filter="pending"
+                    type="button"
+                    aria-pressed="false"
+                  >
+                    Pending</button
+                  ><button
+                    class="filter-tab"
+                    data-filter="completed"
+                    type="button"
+                    aria-pressed="false"
+                  >
+                    Done
+                  </button>
+                </div>
+                <label class="search-box"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.3" />
+                    <path d="m15.5 15.5 4.2 4.2" /></svg
+                  ><span class="visually-hidden">Search tasks</span
+                  ><input
+                    id="all-task-search"
+                    type="search"
+                    placeholder="Search by title or subject"
+                    autocomplete="off"
+                /></label>
+              </div>
+              <div class="task-list all-task-list" id="all-task-list"></div>
+            </section>
+            <footer class="page-footer">
+              <span>Made for your next big thing.</span
+              ><span>Study a little. Achieve a lot. <b>✦</b></span>
+            </footer>
+          </section>
+
+          <!-- Calendar dates are generated from saved task due dates. -->
+          <section
+            class="view-panel"
+            id="calendar-view"
+            aria-labelledby="calendar-heading"
+            hidden
+          >
+            <div class="subpage-heading">
+              <div>
+                <p class="eyebrow">
+                  <span class="eyebrow-line"></span> PLAN AHEAD
+                </p>
+                <h1 id="calendar-heading">
+                  Your calendar <span class="wave" aria-hidden="true">✳</span>
+                </h1>
+                <p class="welcome-copy">A clear view of what's due and when.</p>
+              </div>
+            </div>
+            <div class="calendar-layout">
+              <section
+                class="content-panel calendar-panel"
+                aria-label="Monthly calendar"
+              >
+                <div class="calendar-header">
+                  <button
+                    class="icon-button calendar-nav"
+                    id="calendar-prev"
+                    type="button"
+                    aria-label="Previous month"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <h2 id="calendar-month-label"></h2>
+                  <button
+                    class="icon-button calendar-nav"
+                    id="calendar-next"
+                    type="button"
+                    aria-label="Next month"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m9 18 6-6-6-6" />
+                    </svg></button
+                  ><button
+                    class="text-button today-button"
+                    id="calendar-today"
+                    type="button"
+                  >
+                    Today
+                  </button>
+                </div>
+                <div
+                  class="calendar-grid"
+                  id="calendar-grid"
+                  role="grid"
+                  aria-label="Monthly due dates"
+                ></div>
+                <p class="calendar-legend">
+                  <i class="legend-dot dot-due"></i> Assignment due date
+                  <span>·</span> Select a day to see its tasks
+                </p>
+              </section>
+              <aside class="content-panel selected-day-panel">
+                <div class="panel-heading">
+                  <div>
+                    <p class="section-kicker">YOUR SCHEDULE</p>
+                    <h2 id="selected-day-title">Upcoming deadlines</h2>
+                  </div>
+                  <span class="progress-star" aria-hidden="true">✦</span>
+                </div>
+                <div class="selected-day-list" id="selected-day-list"></div>
+              </aside>
+            </div>
+            <footer class="page-footer">
+              <span>Made for your next big thing.</span
+              ><span>Study a little. Achieve a lot. <b>✦</b></span>
+            </footer>
+          </section>
+        </div>
+      </main>
+    </div>
+    <!-- Shared form used to add or edit a task. -->
+    <div class="modal-backdrop" id="task-modal" hidden>
+      <section
+        class="task-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <div class="dialog-header">
+          <div>
+            <p class="section-kicker">MAKE A PLAN</p>
+            <h2 id="modal-title">Add a task</h2>
+            <p id="modal-description">A few details now, a calmer you later.</p>
+          </div>
+          <button
+            class="icon-button close-modal"
+            id="close-modal"
+            type="button"
+            aria-label="Close dialog"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
+          </button>
+        </div>
+        <form id="task-form">
+          <input id="task-id" type="hidden" /><label
+            class="form-field"
+            for="task-title"
+            >Task name <span>*</span
+            ><input
+              id="task-title"
+              name="title"
+              type="text"
+              maxlength="90"
+              placeholder="e.g. Read chapter 4"
+              required /></label
+          ><label class="form-field" for="task-subject"
+            >Subject <span>*</span
+            ><input
+              id="task-subject"
+              name="subject"
+              type="text"
+              maxlength="50"
+              placeholder="e.g. Biology"
+              required
+          /></label>
+          <div class="form-row">
+            <label class="form-field" for="task-due-date"
+              >Due date <span>*</span
+              ><input
+                id="task-due-date"
+                name="dueDate"
+                type="date"
+                required /></label
+            ><label class="form-field" for="task-priority"
+              >Priority<select id="task-priority" name="priority">
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
+              </select></label
+            >
+          </div>
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+          <div class="dialog-actions">
+            <button class="button button-quiet" id="cancel-modal" type="button">
+              Cancel</button
+            ><button class="button button-primary" id="save-task" type="submit">
+              Save task
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+      <span class="toast-check" aria-hidden="true">✓</span
+      ><span id="toast-message"></span>
+    </div>
+  </body>
+</html>
