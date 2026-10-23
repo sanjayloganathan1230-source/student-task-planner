@@ -78,7 +78,7 @@ Tasks are stored in your browser's `localStorage`. They remain available after r
 
 Add your GitHub Pages URL here after enabling GitHub Pages:
 
-`https://YOUR-USERNAME.github.io/student-task-planner/`
+https://github.com/sanjayloganathan1230-source/student-task-planner
 
 ## Future Improvements
 
