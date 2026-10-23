@@ -18,18 +18,19 @@ A responsive student task planner built with HTML, CSS, and JavaScript to help s
 Add your screenshots to a folder named `screenshots/` in the repository, then use:
 
 ### Dashboard
-![Dashboard](screenshots/01-dashboard.png)
+<img width="1440" height="1100" alt="01-dashboard" src="https://github.com/user-attachments/assets/7cfc8aab-e05b-4602-9277-7433df45c5fd" />
+
 
 ### My Tasks
-![My Tasks](screenshots/02-tasks.png)
+<img width="1440" height="1100" alt="02-tasks" src="https://github.com/user-attachments/assets/a3da6df0-4253-4dd7-9bdf-208131ce6bb5" />
+
 
 ### Calendar
-![Calendar](screenshots/03-calendar.png)
+<img width="1440" height="1100" alt="03-calendar" src="https://github.com/user-attachments/assets/9ac4f4c4-67c6-46b9-be04-d63452f36892" />
+
 
 ### Mobile View
-![Mobile Dashboard](screenshots/04-mobile-dashboard.png)
-
-> If you have not uploaded the screenshots yet, you can remove this section temporarily.
+<img width="390" height="1215" alt="04-mobile-dashboard" src="https://github.com/user-attachments/assets/f9d9dcbd-3f1e-45ab-8678-650d23ccbe71" />
 
 ## Technologies Used
 
